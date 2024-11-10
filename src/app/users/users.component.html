@@ -1,0 +1,94 @@
+<!-- users.component.html -->
+<div class="container">
+    <h1>Manage Users</h1>
+  
+    <div class="row">
+    <!-- Add / Edit User Form with Reactive Form bindings -->
+    <div class="col-md-6">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="form-control"
+        />
+        <div *ngIf="userForm.get('name').invalid && userForm.get('name').touched" class="text-danger">
+          <small *ngIf="userForm.get('name').errors?.required">Name is required.</small>
+          <small *ngIf="userForm.get('name').errors?.minlength">Name must be at least 3 characters long.</small>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+        />
+        <div *ngIf="userForm.get('email').invalid && userForm.get('email').touched" class="text-danger">
+          <small *ngIf="userForm.get('email').errors?.required">Email is required.</small>
+          <small *ngIf="userForm.get('email').errors?.email">Email must be valid.</small>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="form-control"
+        />
+        <div *ngIf="userForm.get('username').invalid && userForm.get('username').touched" class="text-danger">
+          <small *ngIf="userForm.get('username').errors?.required">Username is required.</small>
+          <small *ngIf="userForm.get('username').errors?.minlength">Username must be at least 3 characters long.</small>
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary  mt-2" [disabled]="userForm.invalid">
+        {{ isEditMode ? 'Update User' : 'Add User' }}
+      </button>
+      <button type="button" class="btn btn-secondary mx-2 mt-2" (click)="clearForm()">Clear</button>
+    </form>
+    </div>
+    <div class="col-md-6">
+      <div class="box">
+      Developer: Shivraj Bandekar<br />
+      Contact Number: 8655866680<br />
+      Email Address: bandekarshivraj@gmail.com<br />
+      <a href="https://www.linkedin.com/in/shivraj-bandekar-00a2a813b/" target="_blank">View my LinkedIn profile</a> <br />
+      <b>Note:</b> Each newly added entity is assigned the ID "11" from backend causing every entity to have the same ID. As a result, when attempting to delete an entity, all entities with this ID are deleted simultaneously.
+    </div>
+    </div>
+    </div>
+
+    <hr />
+    <!-- Users List Table -->
+    <table class="table table-bordered table-striped mt-4">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users$ | async">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>
+            <button class="btn btn-info btn-sm mx-2" (click)="editUser(user)">Edit</button>
+            <button class="btn btn-danger btn-sm mx-2" (click)="deleteUser(user.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
